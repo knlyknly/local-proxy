@@ -1,0 +1,117 @@
+{
+  "log": {
+    "loglevel": "info",
+    "error": "/var/log/v2ray/error.log",
+    "access": "/var/log/v2ray/access.log"
+  },
+  "inbounds": [
+    {
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "tls",
+          "http"
+        ]
+      },
+      "listen": "0.0.0.0",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "port": "1082"
+    },
+    {
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "tls",
+          "http"
+        ]
+      },
+      "listen": "0.0.0.0",
+      "protocol": "http",
+      "settings": {
+        "timeout": 360
+      },
+      "port": "1080"
+    }
+  ],
+  "outbounds": [
+    {
+      "mux": {
+        "enabled": true,
+        "concurrency": 8
+      },
+      "protocol": "vmess",
+      "streamSettings": {
+        "wsSettings": {
+          "path": "/backup/",
+          "headers": {
+            "host": "$PROXY_HOST"
+          }
+        },
+        "tlsSettings": {
+          "serverName": "$PROXY_HOST",
+          "allowInsecure": true
+        },
+        "security": "tls",
+        "network": "ws"
+      },
+      "tag": "proxy",
+      "settings": {
+        "vnext": [
+          {
+            "address": "$PROXY_HOST",
+            "users": [
+              {
+                "id": "$PROXY_UUID",
+                "alterId": $PROXY_ALTID,
+                "level": 0,
+                "security": "auto"
+              }
+            ],
+            "port": $PROXY_PORT
+          }
+        ]
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs",
+        "redirect": "",
+        "userLevel": 0
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "none"
+        }
+      }
+    }
+  ],
+  "dns": {},
+  "routing": {
+    "settings": {
+      "domainStrategy": "AsIs",
+      "rules": [
+        {
+          "type": "field",
+          "outboundTag": "proxy",
+          "domain": ["ext:h2y.dat:gfw"]
+        },
+        {
+          "type": "field",
+          "outboundTag": "direct",
+          "network": "udp,tcp"
+        }
+      ]
+    }
+  },
+  "transport": {}
+}

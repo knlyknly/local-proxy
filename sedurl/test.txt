@@ -1,0 +1,16 @@
+|http://10.10.10.10
+|http://10.10.10.11/
+|http://10.10.10.12/some/thing/
+|http://sb@10.10.10.12/some/thing/
+|https://10.10.10.10
+|https://10.10.10.11/
+|https://10.10.10.12/some/thing/
+|https://sb@10.10.10.12/some/thing/
+|http://my-own.example.site_0.com
+|http://my-own.example.site_0.com/
+|http://my-own.example.site_0.com/some/thing/
+|http://sb@my-own.example.site_0.com/some/thing/
+|https://my-own.example.site_0.com
+|https://my-own.example.site_0.com/
+|https://my-own.example.site_0.com/some/thing/
+|https://sb@my-own.example.site_0.com/some/thing/
