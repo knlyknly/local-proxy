@@ -49,6 +49,14 @@ stop:
 	@systemctl stop v2ray.service
 	@printf "done.\n"
 
+restart:
+	@printf "Restart service..."
+	@systemctl restart v2ray.service
+	@printf "done.\n"
+
+status:
+	@systemctl status v2ray.service
+
 uninstall: stop
 	@printf "Uninstall..."
 	@systemctl disable v2ray.service
