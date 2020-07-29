@@ -103,7 +103,7 @@
         {
           "type": "field",
           "outboundTag": "proxy",
-          "domain": ["ext:h2y.dat:gfw"]
+          "domain": ["ext:gfw.dat:gfw"]
         },
         {
           "type": "field",

@@ -6,10 +6,14 @@ GFWLIST=./gfwlist
 config:
 	@V2RAY=${V2RAY} ./config.sh
 
-download:
-	@wget https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt -O gfwlist/gfwlist.txt.base64
+update-gfw:
+	@mkdir tmp
+	@cp ${GFWLIST}/gfw tmp/gfw
+	@${GFWLIST}/v2sitedat -dat ${V2RAY}/bin/gfw.dat -dir tmp
+	@rm -rf tmp
 
-sites:
+update-online:
+	@wget https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt -O ${GFWLIST}/gfwlist.txt.base64
 	@cat gfwlist/gfwlist.txt.base64 \
 		| base64 -d \
 		| grep "^[^\!@\[]" \
@@ -20,11 +24,12 @@ sites:
 		| sed -e 's#^|\(https\{0,1\}\://\)\{0,1\}\(\(\([^\.\/@]\{1,\}\)@\)\{0,1\}\)\(\([^\.\/@]\{1,\}\.\)\{0,\}\([^\.\/@]\{1,\}\.[a-zA-Z]\{2,\}\)\)\(\(\:[0-9]\{1,\}\)\{0,1\}\)\(\(/.*\)\{0,1\}\)$$#\5#g' \
 		| grep '^\([^\.\/\*]\+\.\)\+[a-zA-Z]\+$$' \
 		| uniq -u \
-		> gfwlist/sites/cn
+		> ${GFWLIST}/online
+		@cat ${GFWLIST}/sites/online | wc -l
 
 data:
 	@printf "Turn gfwlist into list..."
-	@${GFWLIST}/v2sitedat -dat ${GFWLIST}/geosite.dat -dir ${GFWLIST}/sites
+	@${GFWLIST}/v2sitedat -dat ${GFWLIST}/sites.dat -dir ${GFWLIST}/sites
 	@printf "done.\n"
 
 install:
@@ -64,4 +69,6 @@ uninstall: stop
 	@systemctl daemon-reload
 	@printf "done.\n"
 
-	
+date:
+	@ntpdate pool.ntp.org
+	@timedatectl set-timezone Asia/Shanghai
