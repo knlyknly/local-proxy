@@ -46,6 +46,7 @@ install:
 
 start:
 	@printf "Start service..."
+	@mkdir -p /var/log/v2ray
 	systemctl start v2ray.service
 	@printf "done.\n"
 
