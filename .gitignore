@@ -2,3 +2,4 @@
 **/.DS_Store
 
 v2ray-linux-arm/etc/config.json
+v2ray-linux-arm/bin/gfw.dat

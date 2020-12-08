@@ -3,6 +3,8 @@
 V2RAY=./v2ray-linux-arm
 GFWLIST=./gfwlist
 
+DEFAULT: config update-gfw
+
 config:
 	@V2RAY=${V2RAY} ./config.sh
 
@@ -38,6 +40,8 @@ install:
 	@cp -R ${V2RAY}/etc/*  /etc/v2ray/
 	@cp -R ${V2RAY}/bin/*  /usr/bin/v2ray/
 	@cp -R ${V2RAY}/systemd/v2ray.service /etc/systemd/system/
+	@cp -R ${V2RAY}/systemv/v2ray /etc/init.d
+	@update-rc.d v2ray defaults
 	@printf "done.\n"
 	@printf "Enable service..."
 	@systemctl daemon-reload
@@ -66,7 +70,8 @@ status:
 uninstall: stop
 	@printf "Uninstall..."
 	@systemctl disable v2ray.service
-	@rm -rf /etc/v2ray/ /usr/bin/v2ray/ /var/log/v2ray /etc/systemd/system/v2ray.service
+	@update-rc.d -f v2ray remove
+	@rm -rf /etc/v2ray/ /usr/bin/v2ray/ /var/log/v2ray /etc/systemd/system/v2ray.service /etc/init.d/v2ray
 	@systemctl daemon-reload
 	@printf "done.\n"
 
